@@ -71,7 +71,7 @@ def search_results_view(request: HttpRequest, continent: str, count: int):
 
     saved_id = None
     col = get_mongo_collection()
-    if col:
+    if col is not None:
         doc = {
             "timestamp": datetime.utcnow(),
             "continent": continent,

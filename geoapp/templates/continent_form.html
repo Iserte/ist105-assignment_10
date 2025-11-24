@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Geo Weather Adventure</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    .container { max-width: 600px; margin: auto; }
+    .card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+    .actions { margin-top: 20px; }
+    label { display:block; margin: 10px 0 5px; }
+    .form-select, .form-control { width: 100%; padding: 8px; }
+    button { padding: 10px 14px; }
+    nav a { margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/history/">History</a>
+    </nav>
+    <h1>Geo Weather Adventure</h1>
+    <div class="card">
+      <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <label>{{ form.continent.label }}</label>
+        {{ form.continent }}
+        <label>{{ form.count.label }}</label>
+        {{ form.count }}
+        <div class="actions">
+          <button type="submit">Search</button>
+        </div>
+      </form>
+      <p>Select a continent and the number of random countries to see the current weather in their capitals.</p>
+    </div>
+  </div>
+</body>
+</html>

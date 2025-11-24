@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Search History</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    .container { max-width: 1000px; margin: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; }
+    th { background: #f7f7f7; }
+    nav a { margin-right: 10px; }
+    .json { white-space: pre-wrap; font-family: Consolas, monospace; background: #fafafa; padding: 8px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/history/">History</a>
+    </nav>
+    <h2>History (last 20 records)</h2>
+    {% if records and records|length > 0 %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Timestamp</th>
+            <th>Continent</th>
+            <th>Requested</th>
+            <th>Errors</th>
+            <th>Results (JSON)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in records %}
+            <tr>
+              <td>{{ doc._id }}</td>
+              <td>{{ doc.timestamp_str }}</td>
+              <td>{{ doc.continent }}</td>
+              <td>{{ doc.requested_count }}</td>
+              <td>
+                {% if doc.errors and doc.errors|length > 0 %}
+                  <ul>
+                    {% for e in doc.errors %}
+                      <li>{{ e }}</li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td><div class="json">{{ doc.results|safe }}</div></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No records in history.</p>
+    {% endif %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Results - {{ continent }}</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    .container { max-width: 900px; margin: auto; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .card { border: 1px solid #ddd; padding: 16px; border-radius: 8px; }
+    .errors { background: #ffecec; border: 1px solid #ffb3b3; padding: 12px; border-radius: 6px; margin-bottom: 16px; }
+    nav a { margin-right: 10px; }
+    .meta { color: #555; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/history/">History</a>
+    </nav>
+
+    <h2>Results for {{ continent }} (requested: {{ requested_count }})</h2>
+
+    {% if saved_id %}
+      <p class="meta">Saved in MongoDB with ID: {{ saved_id }}</p>
+    {% endif %}
+
+    {% if errors and errors|length > 0 %}
+      <div class="errors">
+        <strong>Some errors occurred:</strong>
+        <ul>
+          {% for e in errors %}
+            <li>{{ e }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if results and results|length > 0 %}
+      <div class="grid">
+        {% for r in results %}
+          <div class="card">
+            <h3>{{ r.country }}</h3>
+            <p><strong>Capital:</strong> {{ r.capital|default:"N/A" }}</p>
+            <p><strong>Population:</strong> {{ r.population|default:"N/A" }}</p>
+            <p><strong>Lat/Lng:</strong> {{ r.latlng|default:"N/A" }}</p>
+            {% if r.weather %}
+              <p><strong>Temperature:</strong> {{ r.weather.temp }} °C</p>
+              <p><strong>Description:</strong> {{ r.weather.desc }}</p>
+              <p><strong>Wind:</strong> {{ r.weather.wind }} m/s</p>
+              <p><strong>Humidity:</strong> {{ r.weather.humidity }}%</p>
+            {% else %}
+              <p><em>Weather not available.</em></p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No results available.</p>
+    {% endif %}
+  </div>
+</body>
+</html>

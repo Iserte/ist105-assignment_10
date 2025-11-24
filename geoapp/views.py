@@ -97,7 +97,7 @@ def search_results_view(request: HttpRequest, continent: str, count: int):
 def history_view(request: HttpRequest):
     col = get_mongo_collection()
     records = []
-    if col:
+    if col is not None:
         try:
             cursor = col.find().sort("timestamp", -1).limit(20)
             for doc in cursor:
